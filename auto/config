@@ -6,21 +6,21 @@ rm -rf config
 OPTS=
 # BINARY_IMAGES=none
 BINARY_IMAGES=iso-hybrid
-SYSLINUX_THEME=xbmcbuntu-precise
+SYSLINUX_THEME=xbmcbuntu-quantal
 
 if [ -n "$APT_HTTP_PROXY" ]; then
-	OPTS="${OPTS:+$OPTS }--apt-http-proxy $APT_HTTP_PROXY"
+	OPTS="${OPTS:+$OPTS}--apt-http-proxy $APT_HTTP_PROXY"
 fi
 if [ -n "$APT_FTP_PROXY" ]; then
-	OPTS="${OPTS:+$OPTS }--apt-ftp-proxy $APT_FTP_PROXY"
+	OPTS="${OPTS:+$OPTS}--apt-ftp-proxy $APT_FTP_PROXY"
 fi
 
 if [ -n "$SDK_CHROOTSHELL" ]; then
-	OPTS="${OPTS:+$OPTS } --interactive shell"
+	OPTS="${OPTS:+$OPTS} --interactive shell"
 fi
 
 if [ -n "$SDK_EXT2ROOTFS" ]; then
-	OPTS="${OPTS:+$OPTS } --chroot-filesystem ext2"
+	OPTS="${OPTS:+$OPTS} --chroot-filesystem ext2"
 fi
 
 #	--debootstrap-options "--keyring=ubuntu-keyring" \
