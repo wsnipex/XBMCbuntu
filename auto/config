@@ -27,8 +27,8 @@ fi
 
 lb config noauto \
 	--mode ubuntu \
-	--distribution precise \
-	--architecture i386 \
+	--distribution quantal \
+	--architecture amd64 \
 	--parent-archive-areas "main restricted universe multiverse" \
 	--binary-images "$BINARY_IMAGES" \
 	--bootloader syslinux \
