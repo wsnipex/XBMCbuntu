@@ -23,7 +23,7 @@ echo "Rename binaries..."
 echo ""
 
 if [ -f binary/casper/initrd.img-*-generic ]; then
-	mv binary/casper/initrd.img-*-generic binary/casper/initrd-generic.lz
+	mv binary/casper/initrd.img-*-generic binary/casper/initrd.lz
 fi
 
 if [ -f binary/casper/initrd.img-*-generic-pae ]; then
@@ -31,7 +31,7 @@ if [ -f binary/casper/initrd.img-*-generic-pae ]; then
 fi
 
 if [ -f binary/casper/vmlinuz-*-generic ]; then
-	mv binary/casper/vmlinuz-*-generic binary/casper/vmlinuz-generic
+	mv binary/casper/vmlinuz-*-generic binary/casper/vmlinuz
 fi
 
 if [ -f binary/casper/vmlinuz-*-generic-pae ]; then
