@@ -24,7 +24,7 @@ SDK_BUILDHOOKS=""
 
 # getopt-parse.bash
 
-TEMP=$(getopt -o anp:ulkgih:xPNiem --long amd-only,nvidia-only,proxy:,usb-image,live-only,keep-workarea,grub2,intel-only,hook:,x-swat,proposed,newestlivebuild,interactive,ext2fs,minimal -- "$@")
+TEMP=$(getopt -o anLp:ulkgih:xPNiemL --long amd-only,nvidia-only,amd-legacy-only,proxy:,usb-image,live-only,keep-workarea,grub2,intel-only,hook:,x-swat,proposed,newestlivebuild,interactive,ext2fs,minimal -- "$@")
 eval set -- "$TEMP"
 
 while true
@@ -38,6 +38,11 @@ do
 	-a|--amd-only)
 		echo "Enable option: AMD support only"
 		export SDK_BUILDHOOKS="$SDK_BUILDHOOKS ./buildHook-amdOnly.sh"
+		shift
+		;;
+	-L|--amd-legacy-only)
+		echo "Enable option: AMD legacy support only"
+		export SDK_BUILDHOOKS="$SDK_BUILDHOOKS ./buildHook-amd_legacyOnly.sh"
 		shift
 		;;
 	-u|--usb-image)
