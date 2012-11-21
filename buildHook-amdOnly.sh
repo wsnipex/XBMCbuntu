@@ -20,4 +20,5 @@
 
 rm $WORKPATH/Files/config/package-lists/nvidia.list.chroot
 rm $WORKPATH/Files/config/package-lists/chd.list.chroot
+rm $WORKPATH/Files/config/package-lists/amd-legacy.list.chroot
 
