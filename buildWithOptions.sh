@@ -44,6 +44,7 @@ do
 		echo "Enable option: AMD legacy support only"
 		export SDK_BUILDHOOKS="$SDK_BUILDHOOKS ./buildHook-amd_legacyOnly.sh"
 		shift
+		[[ $SDK_BUILDHOOKS =~ buildHook-amdOnly.sh ]] && echo "--amd-only already supplied, use either -a OR -L" && exit1
 		;;
 	-u|--usb-image)
 		echo "Enable option: Generate USBHDD disk image"
