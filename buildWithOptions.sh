@@ -95,10 +95,10 @@ do
 		shift
 		;;
 	-X|--x86_64)
-                echo "Enable option: minimal build (required packages only)"
-                export ARCH="amd64"
-                shift
-                ;;
+		echo "Enable option: 64bit (x86_64) build"
+		export SDK_ARCH="amd64"
+		shift
+		;;
 	-p|--proxy)
 		echo "Enable option: Use APT proxy"
 		case "$2" in
