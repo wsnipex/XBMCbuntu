@@ -20,9 +20,16 @@
 
 #
 
-# Set Intel by default
-update-alternatives --set i386-linux-gnu_gl_conf /usr/lib/i386-linux-gnu/mesa/ld.so.conf
-ldconfig
+if [ $(which amdconfig) >/dev/null ] 
+then
+    amdconfig --initial -f
+else
+    # Set Intel by default
+    #update-alternatives --set i386-linux-gnu_gl_conf /usr/lib/i386-linux-gnu/mesa/ld.so.conf
+    update-alternatives --set x86_64-linux-gnu_egl_conf /usr/lib/x86_64-linux-gnu/mesa-egl/ld.so.conf
+    update-alternatives --set x86_64-linux-gnu_gl_conf /usr/lib/x86_64-linux-gnu/mesa/ld.so.conf
+    ldconfig
+fi
 
 # let's make plymouth happy
 echo "blacklist radeon" > /etc/modprobe.d/blacklist-amd.conf
@@ -34,7 +41,7 @@ echo "blacklist nvidia-173" >> /etc/modprobe.d/blacklist-nvidia.conf
 echo "alias nvidia nvidia-current"  >> /etc/modprobe.d/blacklist-nvidia.conf
 
 # Use vesafb for plymouth
-sed -i '/vesafb/d' /etc/modprobe.d/blacklist-framebuffer.conf
-echo FRAMEBUFFER=y > /etc/initramfs-tools/conf.d/splash
+#sed -i '/vesafb/d' /etc/modprobe.d/blacklist-framebuffer.conf
+#echo FRAMEBUFFER=y > /etc/initramfs-tools/conf.d/splash
 
 # update-initramfs -u 
