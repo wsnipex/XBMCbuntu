@@ -1,2 +1,4 @@
-deb http://ppa.launchpad.net/team-xbmc/ppa/ubuntu @DISTRIBUTION@ main 
-deb-src http://ppa.launchpad.net/team-xbmc/ppa/ubuntu @DISTRIBUTION@ main
+#deb http://ppa.launchpad.net/team-xbmc/ppa/ubuntu @DISTRIBUTION@ main 
+#deb-src http://ppa.launchpad.net/team-xbmc/ppa/ubuntu @DISTRIBUTION@ main
+deb http://ppa.launchpad.net/wsnipex/xbmc-fernetmenta-master/ubuntu @DISTRIBUTION@ main 
+deb-src http://ppa.launchpad.net/wsnipex/xbmc-fernetmenta-master/ubuntu @DISTRIBUTION@ main
