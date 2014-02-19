@@ -5,7 +5,16 @@ set -o pipefail
 
 export LC_ALL=C
 
-[ -x ${LIVE_BUILD}/scripts/build.sh ] && . ${LIVE_BUILD}/scripts/build.sh || . /usr/lib/live/build.sh
+if   [ -x ${LIVE_BUILD}/scripts/build.sh ]; then
+	. ${LIVE_BUILD}/scripts/build.sh 
+elif [ -x  /usr/lib/live/build.sh ]; then
+	. /usr/lib/live/build.sh
+elif [ -x /usr/share/live/build/scripts/build.sh ]; then
+	. /usr/share/live/build/scripts/build.sh
+else
+	echo "Error: Live builds build.sh not found"
+	exit 1
+fi
 
 Arguments "${@}"
 

@@ -38,7 +38,6 @@ lb config noauto \
 	--bootloader syslinux \
 	--memtest none \
 	--source false \
-	--firmware-chroot false \
 	--initsystem none \
 	--initramfs casper \
 	--initramfs-compression lzma \
