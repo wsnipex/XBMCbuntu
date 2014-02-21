@@ -27,6 +27,7 @@ if [ -z "$ARCH" ]; then
 	ARCH="i386"
 	echo "building for architecture: $ARCH"
 fi
+#	--debootstrap-options "--keyring=ubuntu-keyring" \
 
 lb config noauto \
 	--mode ubuntu \
@@ -39,7 +40,7 @@ lb config noauto \
 	--source false \
 	--initsystem none \
 	--initramfs casper \
-	--initramfs-compression gzip \
+	--initramfs-compression lzma \
 	--security true \
 	--binary-filesystem fat32 \
 	--iso-application XBMCbuntu \
