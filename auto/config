@@ -15,6 +15,8 @@ case "$(dpkg --print-architecture)" in
 		;;
 esac
 
+[ -n $http_proxy ] && OPTS="--apt-http-proxy $http_proxy \"
+
 lb config noauto \
 	--clean \
 	--distribution trusty \
@@ -31,5 +33,5 @@ lb config noauto \
         --iso-publisher http://xbmc.org \
 	--mirror-bootstrap http://ubuntu.inode.at/ubuntu/ \
 	--mirror-chroot-security http://ubuntu.inode.at/ubuntu/ \
-	--apt-http-proxy http://10.241.210.62:8080 \
+	$OPTS \
 "${@}"
