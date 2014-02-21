@@ -1,45 +1,5 @@
-#! /bin/bash
+#!/bin/sh
 
 set -e
-set -o pipefail
 
-export LC_ALL=C
-
-if   [ -x ${LIVE_BUILD}/scripts/build.sh ]; then
-	. ${LIVE_BUILD}/scripts/build.sh 
-elif [ -x  /usr/lib/live/build.sh ]; then
-	. /usr/lib/live/build.sh
-elif [ -x /usr/share/live/build/scripts/build.sh ]; then
-	. /usr/share/live/build/scripts/build.sh
-else
-	echo "Error: Live builds build.sh not found"
-	exit 1
-fi
-
-Arguments "${@}"
-
-Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
-Set_defaults
-
-	lb bootstrap "$@"
-	lb chroot "$@"
-
-	echo "===== Checking size of /usr/share/doc ====="
-	echo BEGIN docdirs
-	(cd chroot && find usr/share/doc -maxdepth 1 -type d | xargs du -s | sort -nr)
-	echo END docdirs
-
-	if which fdupes >/dev/null 2>&1; then
-		echo "===== Checking for duplicate files ====="
-		echo "first line: <total size for dupes> <different dupes> <all dupes>"
-		echo "data lines: <size for dupes> <number of dupes> <file size> <filename> [<filename> ...]"
-		echo BEGIN fdupes
-		(cd chroot \
-		   && fdupes --recurse --noempty --sameline --size --quiet usr \
-		   | awk '/bytes each/ {s=$1} /^usr/ { n+=1; n2+=NF-1; sum+=s*(NF-1); print s*(NF-1), NF-1, s, $0 } END {print sum, n, n2}' \
-		   | sort -nr
-		)
-		echo END fdupes
-	fi
-
-	lb binary "$@"
+lb build noauto "${@}" 2>&1 | tee build.log

@@ -1,9 +1,10 @@
-#! /bin/sh
+#!/bin/sh
+
 set -e
 
-export LB_LINUX_FLAVOURS="none"
-lb clean noauto "$@"
+lb clean noauto "${@}"
 
-rm -rf config
-rm -f binary.manifest binary.manifest-desktop binary.log
-rm -f livecd.*
+rm -f config/binary config/bootstrap config/chroot config/common config/source
+rm -f config/control
+
+rm -f build.log
