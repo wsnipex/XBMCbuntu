@@ -43,16 +43,16 @@ done
 # if there is a pae kernel, let's give it priority
 #
 if ls binary/casper/initrd.img-*-generic-pae > /dev/null ; then
-        mv binary/casper/initrd.img-*-generic-pae binary/casper/initrd.gz
+        mv binary/casper/initrd.img-*-generic-pae binary/casper/initrd.lz
         mv binary/casper/vmlinuz-*-generic-pae binary/casper/vmlinuz
 
         if  ls binary/casper/initrd.img-*-generic > /dev/null ; then
-                mv binary/casper/initrd.img-*-generic binary/casper/initrd-generic.gz
+                mv binary/casper/initrd.img-*-generic binary/casper/initrd-generic.lz
                 mv binary/casper/vmlinuz-*-generic binary/casper/vmlinuz-generic
         fi
 else
         if  ls binary/casper/initrd.img-*-generic > /dev/null ; then
-                mv binary/casper/initrd.img-*-generic binary/casper/initrd.gz
+                mv binary/casper/initrd.img-*-generic binary/casper/initrd.lz
                 mv binary/casper/vmlinuz-*-generic binary/casper/vmlinuz
         fi
 fi
