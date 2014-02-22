@@ -4,18 +4,19 @@ set -e
 
 case "$(dpkg --print-architecture)" in
 	amd64)
-		_LINUX_FLAVOURS="amd64"
+		_LINUX_FLAVOURS="generic"
 		_SOURCE="false"
+		OPTS="--architectures amd64"
 		;;
 
-	i386)
+	i386|i486|i686)
 		#_LINUX_FLAVOURS="486 686-pae"
 		_LINUX_FLAVOURS="generic-pae"
 		_SOURCE="true"
+		OPTS="--architectures i386"
 		;;
 esac
-
-[ -n $http_proxy ] && OPTS="--apt-http-proxy $http_proxy \"
+[ -n "$http_proxy" ] && OPTS="$OPTS --apt-http-proxy $http_proxy"
 
 lb config noauto \
 	--clean \
