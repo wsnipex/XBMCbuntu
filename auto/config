@@ -38,15 +38,10 @@ lb config noauto \
 	--bootloader syslinux \
 	--memtest none \
 	--source false \
-	--initsystem none \
-	--initramfs casper \
-	--initramfs-compression lzma \
 	--security true \
-	--binary-filesystem fat32 \
 	--iso-application XBMCbuntu \
 	--iso-volume XBMCbuntu \
 	--iso-publisher http://xbmc.org \
-	--checksums none \
 	--build-with-chroot true \
 	$OPTS
 
