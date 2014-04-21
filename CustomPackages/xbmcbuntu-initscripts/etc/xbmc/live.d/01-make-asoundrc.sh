@@ -40,7 +40,7 @@ pcm.!default {
 
 if [ -f $GUISETTINGS ]
 then
-  DEVICE=$(grep "<audiodevice>.*</audiodevice>" $GUISETTINGS | sed -e 's/\(<audiodevice>\)\(.*\)\(<\/audiodevice>\)/\2/g' -e 's/[\t ]//g')
+  DEVICE=$(grep "<audiodevice.*>.*</audiodevice>" $GUISETTINGS | sed -e 's/\(<audiodevice.*>\)\(.*\)\(<\/audiodevice>\)/\2/g' -e 's/[\t ]//g')
 else
   echo "Error: $GUISETTINGS not found"
   exit 1
