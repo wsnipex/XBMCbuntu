@@ -25,32 +25,41 @@ GUISETTINGS=$homedir/.xbmc/userdata/guisettings.xml
 function create_asoundrc {
   [ -f $homedir/.asoundrc ] && echo "Error: $homedir/.asoundrc exists, please remove it manually" && exit 1
 
-  TEMP='
+  cat > $homedir/.asoundrc << EOF 
+# --auto-generated-- by /etc/xbmc/live.d/01-make-asoundrc.sh
 pcm.!default {
   type plug;
-  slave.pcm "#DEVICE#";
+  slave.pcm "$DEVICE";
 }
-'
+EOF
 
-  echo $TEMP | sed "s/#DEVICE#/$DEVICE/" > $homedir/.asoundrc
   echo "Alsa config created in $homedir/.asoundrc with following content:"
   cat $homedir/.asoundrc
   [ "$(id -u)" = "0" ] && chown $xbmcuser:$xbmcuser $homedir/.asoundrc
 }
 
-if [ -f $GUISETTINGS ]
-then
-  DEVICE=$(grep "<audiodevice.*>.*</audiodevice>" $GUISETTINGS | sed -e 's/\(<audiodevice.*>\)\(.*\)\(<\/audiodevice>\)/\2/g' -e 's/[\t ]//g')
-else
-  echo "Error: $GUISETTINGS not found"
-  exit 1
-fi
+function get_device {
+  if [ -f $GUISETTINGS ]
+  then
+    DEVICE=$(grep "<audiodevice.*>.*</audiodevice>" $GUISETTINGS | sed -e 's/\(<audiodevice.*>\)\(.*\)\(<\/audiodevice>\)/\2/g' -e 's/[\t ]//g')
+  else
+    echo "Error: $GUISETTINGS not found"
+    exit 1
+  fi
+}
 
-if [ "${DEVICE:0:4}" = "ALSA" ]
-then
-  DEVICE=${DEVICE:5}
-  create_asoundrc
-else
-  echo "Error: no alsa device detected. found device: $DEVICE"
-  exit 1
-fi
+function check_device {
+  if [ "${DEVICE:0:4}" = "ALSA" ] && [ "${DEVICE:5}" != "default" ]
+  then
+    DEVICE=${DEVICE:5}
+    [ "${DEVICE:0:1}" = "@" ] && DEVICE="plughw:${DEVICE:2}"
+  else
+    echo "Error: no (or default) alsa device detected. found device: $DEVICE"
+    echo "Please configure a real alsa device in Xbmc -> System -> Settings -> System -> Audio Output"
+    exit 1
+  fi
+}
+
+get_device
+check_device
+create_asoundrc
