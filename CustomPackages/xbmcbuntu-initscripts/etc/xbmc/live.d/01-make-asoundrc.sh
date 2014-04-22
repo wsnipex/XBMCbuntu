@@ -38,6 +38,7 @@ function check_device {
     DEVICE=${DEVICE:5}
     [ "${DEVICE:0:1}" = "@" ] && DEVICE="plughw:${DEVICE:2}"
   else
+    [ "${DEVICE:0:5}" = "PULSE" ] && echo "Info: you are running pulseaudio, you don't need an .asoundrc" && exit 0
     echo "Error: no (or default) alsa device detected. found device: $DEVICE"
     echo "Please configure a real alsa device in Xbmc -> System -> Settings -> System -> Audio Output"
     exit 1
@@ -53,7 +54,8 @@ function check_asoundrc {
     local cur_device=$(grep slave.pcm $homedir/.asoundrc | sed 's/[ ].*slave.pcm "\(.*\)";/\1/g')
     [ "${cur_device}" = "${DEVICE}" ] && echo "Info: correct device is already configured" && exit 0
     echo "Info: $homedir/.asoundrc exists, but is marked "AUTOUPDATE=True", overwriting it"
-    mv $homedir/.asoundrc $homedir/.asoundrc.bak
+    [ -f $homedir/.asoundrc.old ] && mv $homedir/.asoundrc.old $homedir/.asoundrc.old.1
+    mv $homedir/.asoundrc $homedir/.asoundrc.old
   else
     echo "Error: $homedir/.asoundrc exists and "AUTOUPDATE=True" not found, not modifying it"
     exit 1
