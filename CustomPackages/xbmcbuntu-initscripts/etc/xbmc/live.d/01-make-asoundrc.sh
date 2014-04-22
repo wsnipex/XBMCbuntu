@@ -22,22 +22,6 @@ homedir=/home/$xbmcuser
 [ -z $xbmcuser ] && homedir=$HOME
 GUISETTINGS=$homedir/.xbmc/userdata/guisettings.xml
 
-function create_asoundrc {
-  [ -f $homedir/.asoundrc ] && echo "Error: $homedir/.asoundrc exists, please remove it manually" && exit 1
-
-  cat > $homedir/.asoundrc << EOF 
-# --auto-generated-- by /etc/xbmc/live.d/01-make-asoundrc.sh
-pcm.!default {
-  type plug;
-  slave.pcm "$DEVICE";
-}
-EOF
-
-  echo "Alsa config created in $homedir/.asoundrc with following content:"
-  cat $homedir/.asoundrc
-  [ "$(id -u)" = "0" ] && chown $xbmcuser:$xbmcuser $homedir/.asoundrc
-}
-
 function get_device {
   if [ -f $GUISETTINGS ]
   then
@@ -60,6 +44,37 @@ function check_device {
   fi
 }
 
+function check_asoundrc {
+  if [ -f $homedir/.asoundrc ] 
+  then
+    local auto_update=$(grep "AUTOUPDATE=" $homedir/.asoundrc | sed 's/#.*\(AUTOUPDATE=True\).*/\1/g')
+    if [ "${auto_update}" = "AUTOUPDATE=True" ]
+    then
+      echo "Info: $homedir/.asoundrc exists, but is marked "AUTOUPDATE=True", overwriting it"
+      mv $homedir/.asoundrc $homedir/.asoundrc.bak
+    else
+      echo "Error: $homedir/.asoundrc exists and "AUTOUPDATE=True" not found, not modifying it"
+      exit 1
+    fi
+  fi
+}
+
+function create_asoundrc {
+  cat > $homedir/.asoundrc << EOF
+# --auto-generated-- by /etc/xbmc/live.d/01-make-asoundrc.sh
+# AUTOUPDATE=True  # change this to disable updating of this file
+pcm.!default {
+  type plug;
+  slave.pcm "$DEVICE";
+}
+EOF
+
+  echo "Alsa config created in $homedir/.asoundrc with following content:"
+  cat $homedir/.asoundrc
+  [ "$(id -u)" = "0" ] && chown $xbmcuser:$xbmcuser $homedir/.asoundrc
+}
+
 get_device
 check_device
+check_asoundrc
 create_asoundrc
