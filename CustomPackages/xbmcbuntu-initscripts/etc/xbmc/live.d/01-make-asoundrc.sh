@@ -45,17 +45,18 @@ function check_device {
 }
 
 function check_asoundrc {
-  if [ -f $homedir/.asoundrc ] 
+  [ -f $homedir/.asoundrc ] || return
+
+  local auto_update=$(grep "AUTOUPDATE=" $homedir/.asoundrc | sed 's/#[ ]*\(.*AUTOUPDATE=True\).*/\1/g')
+  if [ "${auto_update}" = "AUTOUPDATE=True" ]
   then
-    local auto_update=$(grep "AUTOUPDATE=" $homedir/.asoundrc | sed 's/#.*\(AUTOUPDATE=True\).*/\1/g')
-    if [ "${auto_update}" = "AUTOUPDATE=True" ]
-    then
-      echo "Info: $homedir/.asoundrc exists, but is marked "AUTOUPDATE=True", overwriting it"
-      mv $homedir/.asoundrc $homedir/.asoundrc.bak
-    else
-      echo "Error: $homedir/.asoundrc exists and "AUTOUPDATE=True" not found, not modifying it"
-      exit 1
-    fi
+    local cur_device=$(grep slave.pcm $homedir/.asoundrc | sed 's/[ ].*slave.pcm "\(.*\)";/\1/g')
+    [ "${cur_device}" = "${DEVICE}" ] && echo "Info: correct device is already configured" && exit 0
+    echo "Info: $homedir/.asoundrc exists, but is marked "AUTOUPDATE=True", overwriting it"
+    mv $homedir/.asoundrc $homedir/.asoundrc.bak
+  else
+    echo "Error: $homedir/.asoundrc exists and "AUTOUPDATE=True" not found, not modifying it"
+    exit 1
   fi
 }
 
